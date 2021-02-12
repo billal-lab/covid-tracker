@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import About from './Components/About';
+import Cantact from "./Components/Cantact";
+import Navbar from './Components/Navbar';
+import Countries from  './Components/Countries'
+import CountryDetails from './Components/CountryDetails'
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+          <Switch>
+              <Route path="/Countries"  exact component={Countries}/>
+          </Switch>
+          <Switch>
+              <Route path="/Countries/:id" exact component={CountryDetails}/>
+          </Switch>
+          <Switch>
+            <Route path="/About" exact component={About}/>
+          </Switch>
+          <Switch>
+            <Route path="/Cantact" exact component={Cantact}/>
+          </Switch>
+      </div>
+    </Router>
   );
 }
 
