@@ -4,14 +4,21 @@ export default  class Countries extends Component{
     constructor(){
         super();
         this.state={
+            timeout:0,
             country:null
         }
     }
 
     componentDidMount(){
+        this.incrementTimout();
         this.getData();
     }
-
+    
+    incrementTimout(){
+        setInterval(()=>{
+            this.setState({timeout:this.state.timeout+1})
+        },1000)
+    }
     async getData(){
         const api = "https://www.trackcorona.live/api/countries";
         const { id } = this.props.match.params;
@@ -25,33 +32,36 @@ export default  class Countries extends Component{
     }
 
     render(){
+        const style={
+            width: "300px"
+        }
         if(this.state.country!=null){
             return(
                 <div className="d-flex justify-content-around mt-5">
-                    <div>
-                        <p>
-                            Country : {this.state.country.location}
-                        </p>
-                        <p>
-                            Confirmed cases:  {this.state.country.confirmed}
-                        </p>
-                        <p>
-                            Recovered cases:  {this.state.country.recovered}
-                        </p>
-                        <p>
-                            Number od death:  {this.state.country.dead}
-                        </p>
-                    </div>
-                    <div>
+                    <div className="card" style={style}>
                         <img src={`https://www.countryflags.io/${this.props.match.params.id}/flat/64.png`}/>
-                    </div>
-                   
+                        <div className="card-body">
+                            <h4 className="card-title">Country : {this.state.country.location}</h4>
+                            <p className="card-text">Confirmed cases:  {this.state.country.confirmed}</p>
+                            <p className="card-text">Recovered cases:  {this.state.country.recovered}</p>
+                            <p className="card-text">Number of death:  {this.state.country.dead}</p>
+                            <p className="card-text">updated at :  {(new Date(this.state.country.updated)).toLocaleDateString()}</p>
+                            
+                        </div>
+                    </div>                   
                 </div>
             );
         }
-        return(
+        if(this.state.timeout<5){
+            return(
             <div className="d-flex justify-content-around mt-5">
-                <div class="spinner-border"></div>
+            <div class="spinner-border"></div>
+            </div>)
+        }
+        return(
+          
+            <div className="d-flex justify-content-around mt-5">
+            Oooops ! Somthing is wrong
             </div>
         )
     }
